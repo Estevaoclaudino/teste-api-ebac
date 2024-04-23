@@ -39,15 +39,17 @@ describe('Testes da Funcionalidade Usuários', () => {
   it('Deve validar um usuário com email inválido - POST', () => {
     cy.request({
       method: 'POST',
-      url: 'login',
+      url: 'usuarios',
       body: {
-        "email": "cristianoronaldo@qa.com",
-        "password": "teste"
+        "nome": faker.person.fullName,
+        "email": "emailinvalido.com.br",
+        "password": "teste",
+        "administrador": "true"
       },
       failOnStatusCode: false
     }).should((response) =>{
-      expect(response.status).equal(401)
-      expect(response.body.message).equal('Email e/ou senha inválidos')
+      expect(response.status).equal(400)
+      expect(response.body.email).to.equal('email deve ser um email válido')
     })
   });
 
